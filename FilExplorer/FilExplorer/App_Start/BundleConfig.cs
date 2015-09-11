@@ -25,6 +25,7 @@ namespace FilExplorer
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/PrivateStyles.css",
                       "~/Content/site.css"));
         }
     }
