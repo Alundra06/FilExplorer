@@ -92,9 +92,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FilExplorer\FilExplorer.csproj">
-      <Project>{5E8EFCDC-ABC9-4FCF-A970-5B68B75077D2}</Project>
-      <Name>FilExplorer</Name>
+    <ProjectReference Include="..\FilExplorer.WebSite\FilExplorer.WebSite.csproj">
+      <Project>{5e8efcdc-abc9-4fcf-a970-5b68b75077d2}</Project>
+      <Name>FilExplorer.WebSite</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

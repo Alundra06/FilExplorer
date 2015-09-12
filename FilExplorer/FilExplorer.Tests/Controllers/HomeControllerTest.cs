@@ -5,9 +5,9 @@ using System.Text;
 using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FilExplorer;
-using FilExplorer.Controllers;
+using FilExplorer.WebSite.Controllers;
 
-namespace FilExplorer.Tests.Controllers
+namespace FilExplorer.WebSite.Tests.Controllers
 {
     [TestClass]
     public class HomeControllerTest
