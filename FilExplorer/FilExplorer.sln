@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilExplorer", "FilExplorer\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilExplorer.Tests", "FilExplorer.Tests\FilExplorer.Tests.csproj", "{195B1D46-D64D-4EF9-A285-3183F13BE682}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilExplorer.DataLayer", "FilExplorer.DataLayer\FilExplorer.DataLayer.csproj", "{FCA7F131-BAC9-4B55-9775-D84AF55D9564}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{195B1D46-D64D-4EF9-A285-3183F13BE682}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{195B1D46-D64D-4EF9-A285-3183F13BE682}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{195B1D46-D64D-4EF9-A285-3183F13BE682}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCA7F131-BAC9-4B55-9775-D84AF55D9564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCA7F131-BAC9-4B55-9775-D84AF55D9564}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCA7F131-BAC9-4B55-9775-D84AF55D9564}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCA7F131-BAC9-4B55-9775-D84AF55D9564}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

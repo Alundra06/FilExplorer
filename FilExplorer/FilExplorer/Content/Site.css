@@ -22,3 +22,9 @@ select,
 textarea {
     max-width: 280px;
 }
+
+/*New styles specific for this website*/
+.alert-success {
+  background-color: hotpink;
+}
+
