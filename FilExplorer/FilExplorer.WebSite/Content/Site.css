@@ -27,4 +27,7 @@ textarea {
 .alert-success {
   background-color: hotpink;
 }
+.bgMain {
+    background-image: url('Assets/furley_bg.png');
+}
 
