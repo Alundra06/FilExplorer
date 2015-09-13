@@ -7,13 +7,13 @@ namespace FilExplorer.DataLayer.Migrations2
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class ADDFOLDERANDFILE : IMigrationMetadata
+    public sealed partial class ADDFOLDERANDFILE5 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ADDFOLDERANDFILE));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ADDFOLDERANDFILE5));
         
         string IMigrationMetadata.Id
         {
-            get { return "201509131917413_ADDFOLDERANDFILE"; }
+            get { return "201509132038219_ADDFOLDERANDFILE5"; }
         }
         
         string IMigrationMetadata.Source

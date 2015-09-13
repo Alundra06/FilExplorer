@@ -3,7 +3,7 @@ namespace FilExplorer.DataLayer.Migrations2
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class ADDFOLDERANDFILE2 : DbMigration
+    public partial class ADDFOLDERANDFILE7 : DbMigration
     {
         public override void Up()
         {

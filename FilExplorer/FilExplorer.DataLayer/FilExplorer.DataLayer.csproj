@@ -93,6 +93,38 @@
     <Compile Include="Migrations\201509132011499_ADDFOLDERANDFILE3.Designer.cs">
       <DependentUpon>201509132011499_ADDFOLDERANDFILE3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509132033107_InitialCreate.cs" />
+    <Compile Include="Migrations\201509132033107_InitialCreate.Designer.cs">
+      <DependentUpon>201509132033107_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509132037595_ADDFOLDERANDFILE1.cs" />
+    <Compile Include="Migrations\201509132037595_ADDFOLDERANDFILE1.Designer.cs">
+      <DependentUpon>201509132037595_ADDFOLDERANDFILE1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509132038219_ADDFOLDERANDFILE5.cs" />
+    <Compile Include="Migrations\201509132038219_ADDFOLDERANDFILE5.Designer.cs">
+      <DependentUpon>201509132038219_ADDFOLDERANDFILE5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509132039389_ADDFOLDERANDFILE6.cs" />
+    <Compile Include="Migrations\201509132039389_ADDFOLDERANDFILE6.Designer.cs">
+      <DependentUpon>201509132039389_ADDFOLDERANDFILE6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509132043371_ADDFOLDERANDFILE7.cs" />
+    <Compile Include="Migrations\201509132043371_ADDFOLDERANDFILE7.Designer.cs">
+      <DependentUpon>201509132043371_ADDFOLDERANDFILE7.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509132045325_ADDFOLDERModel.cs" />
+    <Compile Include="Migrations\201509132045325_ADDFOLDERModel.Designer.cs">
+      <DependentUpon>201509132045325_ADDFOLDERModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509132047172_ADDFOLDERModel2.cs" />
+    <Compile Include="Migrations\201509132047172_ADDFOLDERModel2.Designer.cs">
+      <DependentUpon>201509132047172_ADDFOLDERModel2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509132056163_AddFileModel.cs" />
+    <Compile Include="Migrations\201509132056163_AddFileModel.Designer.cs">
+      <DependentUpon>201509132056163_AddFileModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\FileModel.cs" />
@@ -120,6 +152,30 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509132011499_ADDFOLDERANDFILE3.resx">
       <DependentUpon>201509132011499_ADDFOLDERANDFILE3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509132033107_InitialCreate.resx">
+      <DependentUpon>201509132033107_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509132037595_ADDFOLDERANDFILE1.resx">
+      <DependentUpon>201509132037595_ADDFOLDERANDFILE1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509132038219_ADDFOLDERANDFILE5.resx">
+      <DependentUpon>201509132038219_ADDFOLDERANDFILE5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509132039389_ADDFOLDERANDFILE6.resx">
+      <DependentUpon>201509132039389_ADDFOLDERANDFILE6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509132043371_ADDFOLDERANDFILE7.resx">
+      <DependentUpon>201509132043371_ADDFOLDERANDFILE7.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509132045325_ADDFOLDERModel.resx">
+      <DependentUpon>201509132045325_ADDFOLDERModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509132047172_ADDFOLDERModel2.resx">
+      <DependentUpon>201509132047172_ADDFOLDERModel2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509132056163_AddFileModel.resx">
+      <DependentUpon>201509132056163_AddFileModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using FilExplorer.DataLayer.Models;
+using FilExplorer.DataLayer.DAL;
 
 namespace FilExplorer.WebSite.Controllers
 {
@@ -17,9 +18,11 @@ namespace FilExplorer.WebSite.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private IFolderContext FolderDB;
 
-        public AccountController()
+        public AccountController(IFolderContext FolderDBContext)
         {
+            FolderDB = FolderDBContext;
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -58,6 +61,7 @@ namespace FilExplorer.WebSite.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
+            //var ParentFolderID = FolderDB.GetAllFolders.First();
             return View();
         }
 

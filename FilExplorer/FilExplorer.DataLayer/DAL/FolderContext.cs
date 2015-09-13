@@ -4,7 +4,7 @@ using System.Data.Entity;
 
 namespace FilExplorer.DataLayer.DAL
 {
-    public class FolderContext:DbContext, IFolderContext
+    public class FolderContext: DbContext, IFolderContext
     {
         public FolderContext()
             : base("DefaultConnection")

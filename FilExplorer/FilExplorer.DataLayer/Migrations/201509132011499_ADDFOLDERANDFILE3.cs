@@ -1,4 +1,4 @@
-namespace FilExplorer.DataLayer.Migrations
+namespace FilExplorer.DataLayer.Migrations2
 {
     using System;
     using System.Data.Entity.Migrations;
