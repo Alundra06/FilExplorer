@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FilExplorer.DataLayer.DAL
 {
-    interface IFolderContext
+    public interface IFolderContext
     {
         System.Data.Entity.IDbSet<FolderModel> Folders { get; set; }
         void Commit();

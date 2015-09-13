@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace FilExplorer.DataLayer.DAL
 {
-    interface IFileContext
+    public interface IFileContext
     {
         void Commit();
         void DisposeOfObject();

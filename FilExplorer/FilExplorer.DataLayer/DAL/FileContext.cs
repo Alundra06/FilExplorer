@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace FilExplorer.DataLayer.DAL
 {
-    class FileContext:DbContext,IFileContext
+    public class FileContext:DbContext,IFileContext
     {
         public FileContext()
             : base("DefaultConnection")
