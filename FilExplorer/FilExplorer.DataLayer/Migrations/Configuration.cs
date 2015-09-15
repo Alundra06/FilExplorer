@@ -5,14 +5,14 @@ namespace FilExplorer.DataLayer.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<FilExplorer.DataLayer.DAL.FileContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<FilExplorer.DataLayer.DAL.FolderContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(FilExplorer.DataLayer.DAL.FileContext context)
+        protected override void Seed(FilExplorer.DataLayer.DAL.FolderContext context)
         {
             //  This method will be called after migrating to the latest version.
 

@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using FilExplorer.DataLayer.Models;
 using FilExplorer.DataLayer.DAL;
+using FilExplorer.Controllers;
 
 namespace FilExplorer.WebSite.Controllers
 {
@@ -18,11 +19,11 @@ namespace FilExplorer.WebSite.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private IFolderContext FolderDB;
+        private IFolderController FolderCtrl;
 
-        public AccountController(IFolderContext FolderDBContext)
+        public AccountController(IFolderController FolderController)
         {
-            FolderDB = FolderDBContext;
+            FolderCtrl = FolderController;
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -159,6 +160,7 @@ namespace FilExplorer.WebSite.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    FolderCtrl.CreateNewFolder("Test Folder", "", User.Identity.GetUserId());
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771

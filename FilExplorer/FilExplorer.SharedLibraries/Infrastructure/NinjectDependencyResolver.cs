@@ -4,6 +4,7 @@ using Ninject;
 using System.Web.Mvc;
 using FilExplorer.DataLayer.Models;
 using FilExplorer.DataLayer.DAL;
+using FilExplorer.Controllers;
 
 namespace FilExplorer.SharedLibraries.Infrastructure
 {
@@ -32,6 +33,7 @@ namespace FilExplorer.SharedLibraries.Infrastructure
             kernel.Bind<IFileContext>().To<FileContext>();
 
             //Controllers binding
+            kernel.Bind<IFolderController>().To<FolderController>();
 
         }
     }

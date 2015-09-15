@@ -261,7 +261,9 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="SQLServer.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Folder\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -270,6 +272,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FilExplorer.Controllers\FilExplorer.Controllers.csproj">
+      <Project>{832ccab4-cc0c-4dba-ac18-4cae21dc9461}</Project>
+      <Name>FilExplorer.Controllers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FilExplorer.DataLayer\FilExplorer.DataLayer.csproj">
       <Project>{fca7f131-bac9-4b55-9775-d84af55d9564}</Project>
       <Name>FilExplorer.DataLayer</Name>
