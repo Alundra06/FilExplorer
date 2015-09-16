@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using FilExplorer.DataLayer.Models;
 using FilExplorer.DataLayer.DAL;
 using FilExplorer.Controllers;
+using System.Collections.Generic;
 
 namespace FilExplorer.WebSite.Controllers
 {
@@ -160,7 +161,12 @@ namespace FilExplorer.WebSite.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    FolderCtrl.CreateNewFolder("Test Folder", "", User.Identity.GetUserId());
+                    var DefaultFoldersName = new List<string>();
+                    DefaultFoldersName.Add("HL/CDA");
+                    DefaultFoldersName.Add("Medical Images (DICOM)");
+                    DefaultFoldersName.Add("Videos");
+                    DefaultFoldersName.Add("Misc");
+                    FolderCtrl.CreateDefaultFolders(user.Id,DefaultFoldersName);
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771

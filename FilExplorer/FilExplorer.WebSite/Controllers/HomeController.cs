@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace FilExplorer.WebSite.Controllers
 {
@@ -29,7 +30,8 @@ namespace FilExplorer.WebSite.Controllers
         }
         public ActionResult ListFolders(string UserID)
         {
-            IQueryable<FolderModel> fm = FolderDB.GetAllFolders;
+            var UserId = User.Identity.GetUserId();
+            IQueryable<FolderModel> fm = FolderDB.GetAllFolders.Where(s => s.UserId == UserId);
            
             return View(fm);
 

@@ -34,5 +34,25 @@ namespace FilExplorer.Controllers
             }
             return View();
         }
+        public ActionResult CreateDefaultFolders(string UserID, List<string> FoldersNames)
+        {
+            foreach(string FolderName in FoldersNames )
+            {
+                FolderModel newFolder = new FolderModel()
+                {
+                    FolderID = Guid.NewGuid().ToString(),
+                    Name = FolderName,
+                    CreationDate = DateTime.Now,
+                    ParentFolder = "",
+                    UserId = UserID
+                };
+                if (ModelState.IsValid)
+                {
+                    FolderDB.Folders.Add(newFolder);
+                    FolderDB.Commit();
+                }
+            }
+                return View();
+        }
     }
 }
