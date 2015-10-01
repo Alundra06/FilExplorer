@@ -74,6 +74,7 @@ namespace FilExplorer.WebSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            FolderCtrl.CreateNewFolderOnServer("NewFolder");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -166,7 +167,16 @@ namespace FilExplorer.WebSite.Controllers
                     DefaultFoldersName.Add("Medical Images (DICOM)");
                     DefaultFoldersName.Add("Videos");
                     DefaultFoldersName.Add("Misc");
-                    FolderCtrl.CreateDefaultFolders(user.Id,DefaultFoldersName);
+                    try
+                    {
+                        FolderCtrl.CreateDefaultFolders(user.Id, DefaultFoldersName);
+                    }
+                    catch (Exception)
+                    {
+                        
+                        throw;
+                    }
+                   
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771

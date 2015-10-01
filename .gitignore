@@ -190,3 +190,5 @@ ModelManifest.xml
 
 #My SQL SERVER connections
 SQLServer.config
+#AWS App Settings 
+AWS.config

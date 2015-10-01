@@ -40,6 +40,14 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.IO.Abstractions, Version=2.0.0.116, Culture=neutral, PublicKeyToken=d480b5b72fb413da, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Abstractions.2.0.0.116\lib\net40\System.IO.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Abstractions.TestingHelpers, Version=2.0.0.116, Culture=neutral, PublicKeyToken=d480b5b72fb413da, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Abstractions.TestingHelpers.2.0.0.116\lib\net40\System.IO.Abstractions.TestingHelpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Extensions" />
@@ -82,6 +90,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\FolderControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
   </ItemGroup>
@@ -92,6 +101,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FilExplorer.Controllers\FilExplorer.Controllers.csproj">
+      <Project>{832ccab4-cc0c-4dba-ac18-4cae21dc9461}</Project>
+      <Name>FilExplorer.Controllers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FilExplorer.WebSite\FilExplorer.WebSite.csproj">
       <Project>{5e8efcdc-abc9-4fcf-a970-5b68b75077d2}</Project>
       <Name>FilExplorer.WebSite</Name>

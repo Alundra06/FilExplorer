@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using System.Configuration;
 
 namespace FilExplorer.WebSite.Controllers
 {
@@ -18,15 +19,15 @@ namespace FilExplorer.WebSite.Controllers
         }
         public ActionResult Index()
         {
+            ViewBag.pwd = ConfigurationManager.AppSettings["AWSAccessKey"];
+
             return View();
             //return RedirectToAction("Login", "Account");
         }
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
+            return RedirectToAction("CreateNewFolderOnServer", "Folder");
         }
         public ActionResult ListFolders(string UserID)
         {

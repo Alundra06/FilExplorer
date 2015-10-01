@@ -2,9 +2,13 @@
 using FilExplorer.DataLayer.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 
 namespace FilExplorer.Controllers
@@ -12,13 +16,19 @@ namespace FilExplorer.Controllers
     public class FolderController : Controller, IFolderController
     {
         private readonly IFolderContext FolderDB;
-        public FolderController( IFolderContext FolderDBContext)
+        private readonly IFileSystem FileSystem;
+        public FolderController(IFolderContext FolderDBContext, IFileSystem fileSystem)
         {
             FolderDB = FolderDBContext;
+            FileSystem = fileSystem;
+        }
+        public FolderController()
+        {
+
         }
         public ActionResult CreateNewFolder(string FolderName, string ParentFolder, string UserID)
         {
-                  
+
             FolderModel newFolder = new FolderModel()
             {
                 FolderID = Guid.NewGuid().ToString(),
@@ -36,7 +46,7 @@ namespace FilExplorer.Controllers
         }
         public ActionResult CreateDefaultFolders(string UserID, List<string> FoldersNames)
         {
-            foreach(string FolderName in FoldersNames )
+            foreach (string FolderName in FoldersNames)
             {
                 FolderModel newFolder = new FolderModel()
                 {
@@ -50,9 +60,27 @@ namespace FilExplorer.Controllers
                 {
                     FolderDB.Folders.Add(newFolder);
                     FolderDB.Commit();
+                    var folderPath = UserID + @"\" + newFolder.Name;
+                    CreateNewFolderOnServer(folderPath);
                 }
             }
-                return View();
+            return View();
         }
+        public void CreateNewFolderOnServer(string FolderPath)
+        {
+            //string filePath = Path.Combine(HttpRuntime.AppDomainAppPath, FolderPath);
+            //Directory.CreateDirectory(filePath);
+            string pathToCreate = "~/Uploads/";
+            if (Directory.Exists(HostingEnvironment.MapPath("~/uploads")))
+            {
+                var cc= "jhgd";
+
+            }
+
+            //Now you know it is ok, create it
+            Directory.CreateDirectory(FolderPath);
+
+        }
+       
     }
 }
