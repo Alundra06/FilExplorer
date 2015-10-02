@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using FilExplorer.DataLayer.Models;
+using Microsoft.Owin.Host.SystemWeb;
+using System.Web;
 
-namespace FilExplorer.WebSite.Controllers
+namespace FilExplorer.Controllers
 {
     [Authorize]
     public class ManageController : Controller

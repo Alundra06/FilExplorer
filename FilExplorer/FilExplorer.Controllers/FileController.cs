@@ -1,33 +1,31 @@
 ﻿using FilExplorer.DataLayer.DAL;
 using FilExplorer.DataLayer.Models;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
-using System.Web.Mvc;
 
 namespace FilExplorer.Controllers
 {
-    class FileController
+    public class FileController : IFileController
     {
         private IFileContext FileDB;
-        private IFolderContext FolderDB;
-        public FileController(IFileContext FileDBContext, IFolderContext FolderDBContext)
+  
+
+        public FileController()
+        {
+            FileDB = new FileContext();
+        }
+        public FileController(IFileContext FileDBContext)
         {
             FileDB = FileDBContext;
-            FolderDB = FolderDBContext;
         }
-        public void UploadFileToServer(HttpPostedFileBase fileUpload, string FolderID)
+        public void InsertFile(string fileName, string FolderID)
         {
             try
             {
                 FileModel filemodel = new FileModel()
                 {
-
-                    Name = Path.GetFileName(fileUpload.FileName),
+                    Name = fileName,
                     UploadDate = DateTime.Now,
                     FileID = Guid.NewGuid().ToString(),
                     FolderID = FolderID,
@@ -36,14 +34,10 @@ namespace FilExplorer.Controllers
 
                     FileDB.Files.Add(filemodel);
                     FileDB.Commit();
-
-                string TempLocationOnServer = System.AppDomain.CurrentDomain.BaseDirectory + @"Uploads\" + "FileName";
-                fileUpload.SaveAs(TempLocationOnServer);
             }
             catch (Exception)
             {
-                
-                throw;
+                // ignored
             }
         }
     }

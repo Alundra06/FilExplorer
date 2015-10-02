@@ -13,14 +13,14 @@ namespace FilExplorer.WebSite.Controllers
     public class HomeController : Controller
     {
         private IFolderContext FolderDB;
-        public HomeController(IFolderContext FolderDBContext)
+        private IFileContext FileDB;
+        public HomeController(IFolderContext FolderDBContext, IFileContext FileDBContext)
         {
-            FolderDB = FolderDBContext;    
+            FolderDB = FolderDBContext;
+            FileDB = FileDBContext;
         }
         public ActionResult Index()
         {
-            ViewBag.pwd = ConfigurationManager.AppSettings["AWSAccessKey"];
-
             return View();
             //return RedirectToAction("Login", "Account");
         }
@@ -29,12 +29,23 @@ namespace FilExplorer.WebSite.Controllers
         {
             return RedirectToAction("CreateNewFolderOnServer", "Folder");
         }
-        public ActionResult ListFolders(string UserID)
+        public ActionResult ListFolders()
         {
             var UserId = User.Identity.GetUserId();
             IQueryable<FolderModel> fm = FolderDB.GetAllFolders.Where(s => s.UserId == UserId);
+            //var ss = fm.FirstOrDefault().Files;
            
             return View(fm);
+
+        }
+
+        public ActionResult ListFiles(string folderID)
+        {
+
+            IQueryable<FileModel> fileModel = FileDB.GetAllFiles.Where(s => s.FolderID == folderID);
+            //var ss = fm.FirstOrDefault().Files;
+
+            return View(fileModel);
 
         }
     }

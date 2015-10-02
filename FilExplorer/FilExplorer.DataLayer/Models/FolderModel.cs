@@ -36,7 +36,7 @@ namespace FilExplorer.DataLayer.Models
         public String Type { get; set; }
 
         // Link to the relationship with FileModel
-        public List<FileModel> Files { get; set; }
+        public virtual List<FileModel> Files { get; set; }
 
         // Link to the relationship with Identity Model
         //public virtual string UserID { get; set; }

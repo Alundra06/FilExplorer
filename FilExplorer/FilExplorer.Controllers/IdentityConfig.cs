@@ -12,7 +12,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using FilExplorer.DataLayer.Models;
 
-namespace FilExplorer
+namespace FilExplorer.Controllers
 {
     public class EmailService : IIdentityMessageService
     {

@@ -1,60 +1,54 @@
 ﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using FilExplorer.DataLayer.Models;
-using FilExplorer.DataLayer.DAL;
-using FilExplorer.Controllers;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Transactions;
+using System.Web;
+using FilExplorer.Controllers.AWS;
+using TransactionScope = System.Transactions.TransactionScope;
 
-namespace FilExplorer.WebSite.Controllers
+namespace FilExplorer.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private IFolderController FolderCtrl;
+        private readonly IFolderController _folderCtrl;
+        private readonly IS3Controller _s3Controller;
 
-        public AccountController(IFolderController FolderController)
+
+
+        public AccountController()
         {
-            FolderCtrl = FolderController;
+            _folderCtrl = new FolderController();
+            _s3Controller = new S3Controller();
         }
-
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager,
+            IFolderController folderController, IS3Controller s3Controller)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            _folderCtrl = folderController;
+            _s3Controller = s3Controller;
         }
 
         public ApplicationSignInManager SignInManager
         {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set 
-            { 
-                _signInManager = value; 
-            }
+            get { return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>(); }
+            private set { _signInManager = value; }
         }
 
         public ApplicationUserManager UserManager
         {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+            private set { _userManager = value; }
         }
 
         //
@@ -74,7 +68,6 @@ namespace FilExplorer.WebSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            FolderCtrl.CreateNewFolderOnServer("NewFolder");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -82,7 +75,10 @@ namespace FilExplorer.WebSite.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result =
+                await
+                    SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe,
+                        shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -90,7 +86,7 @@ namespace FilExplorer.WebSite.Controllers
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    return RedirectToAction("SendCode", new {ReturnUrl = returnUrl, RememberMe = model.RememberMe});
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
@@ -108,7 +104,7 @@ namespace FilExplorer.WebSite.Controllers
             {
                 return View("Error");
             }
-            return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
+            return View(new VerifyCodeViewModel {Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe});
         }
 
         //
@@ -127,7 +123,10 @@ namespace FilExplorer.WebSite.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result =
+                await
+                    SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe,
+                        rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -158,27 +157,37 @@ namespace FilExplorer.WebSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser {UserName = model.Email, Email = model.Email};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    var DefaultFoldersName = new List<string>();
-                    DefaultFoldersName.Add("HL/CDA");
-                    DefaultFoldersName.Add("Medical Images (DICOM)");
-                    DefaultFoldersName.Add("Videos");
-                    DefaultFoldersName.Add("Misc");
                     try
                     {
-                        FolderCtrl.CreateDefaultFolders(user.Id, DefaultFoldersName);
+                        using (var scope = new TransactionScope())
+                        {
+                            _s3Controller.CreateNewFolder(user.Id, ConfigurationManager.AppSettings["AWSBucketname"]);
+                            var defaultFoldersName = new List<string>();
+                            defaultFoldersName.Add("HL-CDA");
+                            defaultFoldersName.Add("Medical Images (DICOM)");
+                            defaultFoldersName.Add("Videos");
+                            defaultFoldersName.Add("Misc");
+                            _s3Controller.CreateDefaultFolders(user.Id, defaultFoldersName);
+                            _folderCtrl.CreateDefaultFolders(user.Id, defaultFoldersName);
+                            scope.Complete();
+                        }
                     }
-                    catch (Exception)
+                    catch (TransactionAbortedException ex)
                     {
-                        
-                        throw;
+                        //writer.WriteLine("TransactionAbortedException Message: {0}", ex.Message);
                     }
-                   
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    catch (ApplicationException ex)
+                    {
+                        //writer.WriteLine("ApplicationException Message: {0}", ex.Message);
+                    }
+
+
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -301,7 +310,8 @@ namespace FilExplorer.WebSite.Controllers
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
             // Request a redirect to the external login provider
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+            return new ChallengeResult(provider,
+                Url.Action("ExternalLoginCallback", "Account", new {ReturnUrl = returnUrl}));
         }
 
         //
@@ -315,8 +325,10 @@ namespace FilExplorer.WebSite.Controllers
                 return View("Error");
             }
             var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
-            var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
-            return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
+            var factorOptions =
+                userFactors.Select(purpose => new SelectListItem {Text = purpose, Value = purpose}).ToList();
+            return
+                View(new SendCodeViewModel {Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe});
         }
 
         //
@@ -336,7 +348,8 @@ namespace FilExplorer.WebSite.Controllers
             {
                 return View("Error");
             }
-            return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
+            return RedirectToAction("VerifyCode",
+                new {Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe});
         }
 
         //
@@ -359,13 +372,14 @@ namespace FilExplorer.WebSite.Controllers
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+                    return RedirectToAction("SendCode", new {ReturnUrl = returnUrl, RememberMe = false});
                 case SignInStatus.Failure:
                 default:
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+                    return View("ExternalLoginConfirmation",
+                        new ExternalLoginConfirmationViewModel {Email = loginInfo.Email});
             }
         }
 
@@ -446,15 +460,13 @@ namespace FilExplorer.WebSite.Controllers
         }
 
         #region Helpers
+
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
         private IAuthenticationManager AuthenticationManager
         {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
+            get { return HttpContext.GetOwinContext().Authentication; }
         }
 
         private void AddErrors(IdentityResult result)
@@ -494,7 +506,7 @@ namespace FilExplorer.WebSite.Controllers
 
             public override void ExecuteResult(ControllerContext context)
             {
-                var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
+                var properties = new AuthenticationProperties {RedirectUri = RedirectUri};
                 if (UserId != null)
                 {
                     properties.Dictionary[XsrfKey] = UserId;
@@ -502,6 +514,7 @@ namespace FilExplorer.WebSite.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
+
         #endregion
     }
 }

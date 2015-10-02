@@ -1,8 +1,9 @@
-﻿using Microsoft.Owin;
+﻿using FilExplorer.WebSite;
+using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(FilExplorer.Startup))]
-namespace FilExplorer
+[assembly: OwinStartup(typeof(Startup))]
+namespace FilExplorer.WebSite
 {
     public partial class Startup
     {

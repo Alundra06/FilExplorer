@@ -11,10 +11,10 @@ namespace FilExplorer.Tests.Controllers
         public void CreateNewFolderOnServer()
         {
             // Arrange
-            FolderController controller = new FolderController();
+            //FolderController controller = new FolderController();
 
             // Act
-            controller.CreateNewFolderOnServer("Free");
+            //controller.CreateNewFolderOnServer("Free");
 
         }
     }
