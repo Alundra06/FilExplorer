@@ -87,3 +87,27 @@ div.product-chooser{	}
 			top: 0;
 			visibility:hidden;
 		}
+
+.NewText {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: small;
+}
+
+.icon-list, .icon-list li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.icon-list li {
+  margin: 1em;
+  margin-left: 3em;
+}
+
+.icon-list li:before {
+  content: '\f006'; /* fa-star */
+  font-family: 'FontAwesome';
+  float: left;
+  margin-left: -1.5em;
+  color: #0074D9;
+}

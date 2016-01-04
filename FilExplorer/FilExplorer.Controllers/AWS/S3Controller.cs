@@ -26,7 +26,7 @@ namespace FilExplorer.Controllers.AWS
                 fileController = _fileController;
             }
             [HttpPost]
-            public void UploadFileToS3(HttpPostedFileBase uploadFile,string folderName,string folderID)
+            public ActionResult UploadFileToS3(HttpPostedFileBase uploadFile,string folderName,string folderId)
             {
                
                     IAmazonS3 client;
@@ -41,7 +41,8 @@ namespace FilExplorer.Controllers.AWS
                             fileRequest.Key = folderKey;
                             fileRequest.InputStream = uploadFile.InputStream;
                             PutObjectResponse folderResponse = client.PutObject(fileRequest);
-                            fileController.InsertFile(folderKey,folderID);
+                            fileController.InsertFile(folderKey,folderId);
+                     
                         }
                         catch (AmazonS3Exception e)
                         {
@@ -49,11 +50,32 @@ namespace FilExplorer.Controllers.AWS
                             Console.WriteLine("Amazon error code: {0}",
                                 string.IsNullOrEmpty(e.ErrorCode) ? "None" : e.ErrorCode);
                             Console.WriteLine("Exception message: {0}", e.Message);
+    
                         }
                     }
-                RedirectToAction("ListFolders", "Home");
+                return RedirectToAction("ListFolders", "Home");
 
             }
+
+
+            [HttpPost]
+            public ActionResult UploadFileToServer(HttpPostedFileBase uploadFile, string folderName, string folderId)
+            {
+                // Verify that the user selected a file
+                if (uploadFile != null && uploadFile.ContentLength > 0)
+                {
+                    // extract only the filename
+                    var fileName = Path.GetFileName(uploadFile.FileName);
+                    if (fileName != null)
+                    {
+                        var path = Path.Combine(Server.MapPath("~/uploads"), fileName);
+                        uploadFile.SaveAs(path);
+                        fileController.InsertFile(fileName, folderId);
+                    }
+                }
+                return RedirectToAction("ListFolders", "Home");
+            }
+
             public ActionResult CreateNewFolder(string folderName, string bucketPath)
             {
 
@@ -88,6 +110,32 @@ namespace FilExplorer.Controllers.AWS
                     CreateNewFolder(folderName, bucketPath);
                 }
                 return View();
+            }
+
+            public ActionResult DownloadFile(string fileName)
+            {
+                IAmazonS3 client;
+                FileStreamResult myFile = null;
+                var imageStream = new MemoryStream();
+                using (client = Amazon.AWSClientFactory.CreateAmazonS3Client(awsAccessKey, awsSecretKey))
+                {
+                    try
+                    {
+                        var response = client.GetObject(bucketName, fileName);
+                       return File(response.ResponseStream,response.Metadata.ToString(),"dsad");
+
+
+                    }
+                    catch (AmazonS3Exception e)
+                    {
+                        //Console.WriteLine("Folder creation has failed.");
+                        //Console.WriteLine("Amazon error code: {0}",
+                        //    string.IsNullOrEmpty(e.ErrorCode) ? "None" : e.ErrorCode);
+                        //Console.WriteLine("Exception message: {0}", e.Message);
+
+                    }
+                }
+                return myFile;
             }
         }
 }

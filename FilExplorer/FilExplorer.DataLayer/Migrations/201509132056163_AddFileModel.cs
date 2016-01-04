@@ -7,6 +7,9 @@ namespace FilExplorer.DataLayer.Migrations
     {
         public override void Up()
         {
+          
+            
+            
             CreateTable(
                 "dbo.File",
                 c => new

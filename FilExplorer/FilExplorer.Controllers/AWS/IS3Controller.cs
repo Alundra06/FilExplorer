@@ -7,8 +7,8 @@ namespace FilExplorer.Controllers.AWS
 {
     public interface IS3Controller
     {
-        void UploadFileToS3(HttpPostedFileBase file, string folderName, string folderID);
+        ActionResult UploadFileToS3(HttpPostedFileBase file, string folderName, string folderId);
         ActionResult CreateNewFolder(string folderName, string bucketPath);
-        System.Web.Mvc.ActionResult CreateDefaultFolders(string UserID, List<string> FoldersNames);
+       ActionResult CreateDefaultFolders(string UserID, List<string> FoldersNames);
     }
 }

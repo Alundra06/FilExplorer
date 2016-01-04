@@ -43,7 +43,6 @@ namespace FilExplorer.WebSite.Controllers
         {
 
             IQueryable<FileModel> fileModel = FileDB.GetAllFiles.Where(s => s.FolderID == folderID);
-            //var ss = fm.FirstOrDefault().Files;
 
             return View(fileModel);
 

@@ -5,19 +5,25 @@
 }
 
 <div>
-    <h2>My documents:</h2>
+    <h3>My documents:</h3>
 </div>
 <div class="container">
-    @using (Html.BeginForm("UploadFileToS3", "S3", FormMethod.Post, new {enctype = "multipart/form-data", @class = "navbar-form navbar-left"}))
+    @using (Html.BeginForm("UploadFileToServer", "S3", FormMethod.Post, new { enctype = "multipart/form-data", @class = "navbar-form navbar-left", id = "UploadForm" }))
     {
         @Html.Hidden("folderName")
         @Html.Hidden("folderID")
-        <div class="col-md-6">
-            <input type="file" id="uploadFile" name="uploadFile"/>
-        </div>
-    <div class="col-md-6"><input type="submit" value="Upload" class="btn btn-default" /></div>
+        <div class="row">
+            <div class=" col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                <input type="file" id="uploadFile" name="uploadFile"/>
+            </div>
+            <div class=" col-lg-2 col-md-2 col-sm-12 col-xs-12"><hr/></div>
+                <div class="col-lg-5  col-md-5 col-sm-12 col-xs-12">
+                    <input type='button' class="btn-info" value='Upload file' onclick='submitUploadForm()' />
+                </div>
+
+            </div>
     }
-</div>
+    </div>
 
 @*@using (Ajax.BeginForm("ListFiles", "Home", 
                                 new AjaxOptions
@@ -35,6 +41,18 @@
     @Html.Partial("_Folders_Structure")
 </div>
 
-@*<div id="displayFiles">
-    @Html.Partial("_Files_Structure")
-</div>*@
+<script language="javascript" type="text/javascript">
+    function submitUploadForm() {
+        if ($('#folderName').val() == '') {
+            alert('Please select a folder first!');
+            
+        } else if ($('#uploadFile').val() == '') {
+            alert('Please select a file to upload!');
+            $('#uploadFile');
+
+        } else {
+            $("#UploadForm").submit();
+        }
+
+    }
+</script>
